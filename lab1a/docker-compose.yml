@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres:16
+    container_name: lab1a_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: lab1a
+      POSTGRES_PASSWORD: lab1a_password
+      POSTGRES_DB: lab1a
+    ports:
+      - "5432:5432"
+    volumes:
+      # Named volume => data survives `docker compose down` and restarts.
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lab1a -d lab1a"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:

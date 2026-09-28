@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Account · FNMS Lab1a</title>
+    <link rel="icon" href="data:," />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="app.js"></script>
+    <script>
+      requireAuth();
+    </script>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 text-slate-100">
+    <nav class="flex items-center justify-between px-6 py-4 border-b border-white/10">
+      <span class="font-bold text-lg">FNMS Lab1a</span>
+      <div class="flex items-center gap-4 text-sm">
+        <a href="home.html" class="hover:underline">Home</a>
+        <button onclick="logout()" class="bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition">Log out</button>
+      </div>
+    </nav>
+
+    <main class="max-w-2xl mx-auto px-6 py-12 space-y-8">
+      <h1 class="text-3xl font-bold">Account settings</h1>
+
+      <!-- Update email -->
+      <section class="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <h2 class="text-lg font-semibold mb-4">Change email</h2>
+        <form id="emailForm" class="flex flex-col sm:flex-row gap-3">
+          <input id="email" type="email" placeholder="new@example.com"
+            class="flex-1 rounded-lg border border-white/20 bg-white/10 px-3 py-2 placeholder-slate-400 focus:ring-2 focus:ring-indigo-400 outline-none" />
+          <button class="bg-indigo-600 hover:bg-indigo-700 px-5 py-2 rounded-lg font-semibold transition">Save</button>
+        </form>
+      </section>
+
+      <!-- Update password -->
+      <section class="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <h2 class="text-lg font-semibold mb-4">Change password</h2>
+        <form id="passwordForm" class="flex flex-col sm:flex-row gap-3">
+          <input id="password" type="password" placeholder="New password (min 8 chars)" minlength="8"
+            class="flex-1 rounded-lg border border-white/20 bg-white/10 px-3 py-2 placeholder-slate-400 focus:ring-2 focus:ring-indigo-400 outline-none" />
+          <button class="bg-indigo-600 hover:bg-indigo-700 px-5 py-2 rounded-lg font-semibold transition">Update</button>
+        </form>
+      </section>
+
+      <!-- Danger zone -->
+      <section class="bg-red-500/10 border border-red-500/30 rounded-2xl p-6">
+        <h2 class="text-lg font-semibold mb-2 text-red-300">Delete account</h2>
+        <p class="text-sm text-slate-300 mb-4">This permanently removes your account. There is no undo.</p>
+        <button id="deleteBtn" class="bg-red-600 hover:bg-red-700 px-5 py-2 rounded-lg font-semibold transition">Delete my account</button>
+      </section>
+
+      <p id="msg" class="text-sm text-center"></p>
+    </main>
+
+    <script>
+      const msg = document.getElementById("msg");
+      let currentUserId = null;
+
+      function flash(text, ok = true) {
+        msg.className = "text-sm text-center " + (ok ? "text-emerald-400" : "text-red-400");
+        msg.textContent = text;
+      }
+
+      (async () => {
+        try {
+          const me = await api("/api/auth/me", { auth: true });
+          currentUserId = me.id;
+          document.getElementById("email").value = me.email || "";
+        } catch (err) {
+          logout();
+        }
+      })();
+
+      document.getElementById("emailForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        try {
+          await api(`/api/users/${currentUserId}`, {
+            method: "PATCH",
+            auth: true,
+            body: { email: document.getElementById("email").value.trim() || null },
+          });
+          flash("Email updated.");
+        } catch (err) {
+          flash(err.message, false);
+        }
+      });
+
+      document.getElementById("passwordForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const password = document.getElementById("password").value;
+        try {
+          await api(`/api/users/${currentUserId}`, {
+            method: "PATCH",
+            auth: true,
+            body: { password },
+          });
+          document.getElementById("password").value = "";
+          flash("Password updated.");
+        } catch (err) {
+          flash(err.message, false);
+        }
+      });
+
+      document.getElementById("deleteBtn").addEventListener("click", async () => {
+        if (!confirm("Delete your account permanently?")) return;
+        try {
+          await api(`/api/users/${currentUserId}`, { method: "DELETE", auth: true });
+          clearToken();
+          window.location.href = "register.html";
+        } catch (err) {
+          flash(err.message, false);
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.pyc
+backend/.venv/
+.venv/
+
+# OS
+.DS_Store
+
+# NOTE: backend/.env is intentionally committed (throwaway DB creds per the
+# assignment). Do not add real secrets to it.

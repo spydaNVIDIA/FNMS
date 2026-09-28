@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register · FNMS Lab1a</title>
+    <link rel="icon" href="data:," />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+      <div class="bg-white/95 backdrop-blur rounded-2xl shadow-2xl p-8">
+        <h1 class="text-2xl font-bold text-slate-900">Create your account</h1>
+        <p class="text-slate-500 mt-1 mb-6 text-sm">The bedrock for everything you'll build next.</p>
+
+        <form id="form" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Username</label>
+            <input id="username" required minlength="3"
+              class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+              placeholder="jane_doe" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Email <span class="text-slate-400">(optional)</span></label>
+            <input id="email" type="email"
+              class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+              placeholder="jane@example.com" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+            <input id="password" type="password" required minlength="8"
+              class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+              placeholder="At least 8 characters" />
+          </div>
+
+          <button type="submit"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition">
+            Create account
+          </button>
+        </form>
+
+        <p id="msg" class="text-sm mt-4 text-center"></p>
+        <p class="text-sm text-slate-500 mt-4 text-center">
+          Already have an account?
+          <a href="login.html" class="text-indigo-600 font-medium hover:underline">Log in</a>
+        </p>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+      const msg = document.getElementById("msg");
+      document.getElementById("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        msg.textContent = "";
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        try {
+          await api("/api/auth/register", {
+            method: "POST",
+            body: { username, password, email: email || null },
+          });
+          // Auto-login right after registering.
+          const { token } = await api("/api/auth/login", {
+            method: "POST",
+            body: { username, password },
+          });
+          setToken(token);
+          window.location.href = "home.html";
+        } catch (err) {
+          msg.className = "text-sm mt-4 text-center text-red-600";
+          msg.textContent = err.message;
+        }
+      });
+    </script>
+  </body>
+</html>

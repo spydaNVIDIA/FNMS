@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home · FNMS Lab1a</title>
+    <link rel="icon" href="data:," />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="app.js"></script>
+    <script>
+      requireAuth();
+    </script>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 text-slate-100">
+    <nav class="flex items-center justify-between px-6 py-4 border-b border-white/10">
+      <span class="font-bold text-lg">FNMS Lab1A</span>
+      <div class="flex items-center gap-4 text-sm">
+        <a href="account.html" class="hover:underline">Account</a>
+        <button onclick="logout()" class="bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition">Log out</button>
+      </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-6 py-16">
+      <h1 class="text-3xl font-bold">Welcome, <span id="who">…</span></h1>
+
+      <div class="mt-10 bg-white/5 border border-white/10 rounded-2xl p-6">
+        <h2 class="text-sm uppercase tracking-wide text-slate-400 mb-4">Your session</h2>
+        <dl class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+          <div>
+            <dt class="text-slate-400">User ID</dt>
+            <dd id="uid" class="font-mono text-lg">—</dd>
+          </div>
+          <div>
+            <dt class="text-slate-400">Username</dt>
+            <dd id="username" class="text-lg">—</dd>
+          </div>
+          <div>
+            <dt class="text-slate-400">Email</dt>
+            <dd id="email" class="text-lg">—</dd>
+          </div>
+        </dl>
+      </div>
+    </main>
+
+    <script>
+      (async () => {
+        try {
+          const me = await api("/api/auth/me", { auth: true });
+          document.getElementById("who").textContent = me.username;
+          document.getElementById("uid").textContent = me.id;
+          document.getElementById("username").textContent = me.username;
+          document.getElementById("email").textContent = me.email || "(none)";
+        } catch (err) {
+          // Token invalid/expired -> back to login.
+          logout();
+        }
+      })();
+    </script>
+  </body>
+</html>
