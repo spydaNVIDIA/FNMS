@@ -18,6 +18,9 @@ HTML/Tailwind/vanilla-JS frontend. It is the bedrock for future assignments.
 
 ## Run it (copy-paste, in order)
 
+All commands below are run from this `lab1a/` directory (where `docker-compose.yml`
+lives). If you just cloned the repo, `cd lab1a` first.
+
 ### 1. Start the database
 
 ```bash
