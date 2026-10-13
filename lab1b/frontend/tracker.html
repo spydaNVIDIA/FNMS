@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Robotics model tracker · FNMS</title>
+    <link rel="icon" href="data:," />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="app.js"></script>
+    <script>requireAuth();</script>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-slate-100">
+    <nav class="flex items-center justify-between border-b border-white/10 px-6 py-4">
+      <a href="home.html" class="text-lg font-bold">FNMS Command Center</a>
+      <div class="flex items-center gap-4 text-sm">
+        <span class="text-slate-400">Signed in as <span id="who">…</span></span>
+        <a href="account.html" class="hover:underline">Account</a>
+        <button onclick="logout()" class="rounded-lg bg-white/10 px-3 py-1.5 hover:bg-white/20">Log out</button>
+      </div>
+    </nav>
+
+    <main class="mx-auto max-w-6xl space-y-10 px-6 py-10">
+      <header class="flex flex-wrap items-start justify-between gap-5">
+        <div>
+          <p class="text-sm uppercase tracking-[0.2em] text-indigo-300">Agentic tracker</p>
+          <h1 class="mt-2 text-3xl font-bold">Open-source robotics foundation models</h1>
+          <p id="runMeta" class="mt-2 text-sm text-slate-400">Loading…</p>
+          <p id="error" class="mt-2 text-sm text-red-400"></p>
+        </div>
+        <div class="max-w-sm rounded-2xl border border-indigo-400/30 bg-indigo-500/10 p-4">
+          <button
+            id="runNow"
+            type="button"
+            class="w-full rounded-lg bg-indigo-500 px-4 py-2 font-semibold text-white hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Run tracker now
+          </button>
+          <p id="runNowStatus" class="mt-2 text-sm text-slate-300">
+            Uses live Groq and Tavily calls. Same-day runs are diagnostic and do not replace the required day-apart Run 2.
+          </p>
+        </div>
+      </header>
+
+      <section>
+        <h2 id="reportHeading" class="mb-4 text-xl font-semibold">Latest report</h2>
+        <div id="developments" class="grid gap-4 md:grid-cols-2"></div>
+      </section>
+
+      <section class="rounded-2xl border border-white/10 bg-white/5 p-5">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-xl font-semibold">Run history and article ledger</h2>
+          <label class="text-sm text-slate-300">
+            Run
+            <select id="runSelect" class="ml-2 rounded-lg border border-white/20 bg-slate-900 px-3 py-2"></select>
+          </label>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[760px] text-left text-sm">
+            <thead class="text-slate-400">
+              <tr>
+                <th class="px-3 py-2">Article</th>
+                <th class="px-3 py-2">Fetch time</th>
+                <th class="px-3 py-2">Status</th>
+                <th class="px-3 py-2">Reason</th>
+              </tr>
+            </thead>
+            <tbody id="articleRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <script src="tracker.js?v=20261012-3"></script>
+  </body>
+</html>
