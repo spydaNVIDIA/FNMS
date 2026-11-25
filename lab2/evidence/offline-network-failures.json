@@ -1,0 +1,339 @@
+{
+  "evidence_kind": "offline_actual_http_failure_trial",
+  "status": "passed",
+  "created_at": "2026-11-25T08:26:11.823047+00:00",
+  "fixture_source_run_id": "6ff05126-d32d-4e07-8f3e-c084a4b0b47f",
+  "fixture_response_sha256": "fa572528f71a7612b57990c44e86599be215387792e9ecd42f22dd608fc8e9b5",
+  "baseline_sha256": "aa99c56e1317e79640f5586d5ab36a1e5dc9b299f43344a237314db48280249c",
+  "original_k": 5,
+  "saved_development_count": 2,
+  "new_provider_calls": 0,
+  "new_provider_tokens": 0,
+  "database_access": false,
+  "live_workers_contacted": false,
+  "usage_note": "Worker usage in fixture snapshots is historical replay data, not new provider spend.",
+  "fixture_http_receipts": [
+    {
+      "path": "/research",
+      "request_id": "be1b30e3-d22a-453e-8e2b-7efca6eb3fa1",
+      "run_id": "f705e4a0-5fb9-4258-80d6-27bee29f4a8b",
+      "body_sha256": "30a4b5d506e0b0b6e8426812db921851ea17ef9a5d3e1f105a80a6fb46400699",
+      "k": 5
+    }
+  ],
+  "cases": [
+    {
+      "name": "verifier_down",
+      "status": "passed",
+      "elapsed_seconds": 1.603428,
+      "assertions": [
+        "partial",
+        "all claims unverified",
+        "evidence cleared",
+        "fresh findings retained",
+        "three real TCP failures",
+        "one UUID charge at full verifier allocation"
+      ],
+      "snapshot": {
+        "run_id": "f705e4a0-5fb9-4258-80d6-27bee29f4a8b",
+        "topic": "open-source robotics foundation models",
+        "k": 5,
+        "status": "partial",
+        "message": "Research and verification results.",
+        "failed_workers": [
+          {
+            "worker": "researcher",
+            "reason": "token_budget_exhausted"
+          },
+          {
+            "worker": "verifier",
+            "reason": "verifier connection failure or timeout"
+          }
+        ],
+        "developments": [
+          {
+            "id": "dev1",
+            "title": "OCTO open-source robot foundation model",
+            "summary": "OCTO is a transformer\u2011based generalist robot policy pretrained on 800\u202fk trajectories from the Open X\u2011Embodiment dataset, released as open\u2011source software.",
+            "claims": [
+              {
+                "claim_id": "claim1-1",
+                "text": "Open-source generalist models such as OCTO emphasize shared research infrastructure and broader robot-data coverage.",
+                "source_url": "https://www.trossenrobotics.com/post/foundation-models-for-robot-manipulation-pi0-biact-octo",
+                "verdict": "unverified",
+                "evidence": null
+              },
+              {
+                "claim_id": "claim1-2",
+                "text": "Octo is a large, transformer\u2011based policy pretrained on 800k demonstrations from the Open X\u2011Embodiment dataset.",
+                "source_url": "https://www.trossenrobotics.com/post/foundation-models-for-robot-manipulation-pi0-biact-octo",
+                "verdict": "unverified",
+                "evidence": null
+              }
+            ],
+            "rank": 1,
+            "stale": false,
+            "bucket": "still"
+          },
+          {
+            "id": "dev2",
+            "title": "ACT (Action Chunk Transformer) open-source robot foundation model",
+            "summary": "ACT is a transformer-based action chunking model for robotic manipulation, enabling high success rates with limited demonstrations.",
+            "claims": [
+              {
+                "claim_id": "claim2-1",
+                "text": "ACT leverages transformer-based action chunking and end-to-end imitation learning to enable low-cost robotic arms to perform complex tasks with high success rates.",
+                "source_url": "https://github.com/Argo-Robot/foundation_models",
+                "verdict": "unverified",
+                "evidence": null
+              }
+            ],
+            "rank": 2,
+            "stale": false,
+            "bucket": "still"
+          }
+        ],
+        "dropped": [],
+        "ledger": {
+          "be1b30e3-d22a-453e-8e2b-7efca6eb3fa1": {
+            "worker": "researcher",
+            "allocated": {
+              "steps": 18,
+              "fetches": 16,
+              "tokens": 80000
+            },
+            "charged": {
+              "steps": 13,
+              "fetches": 6,
+              "tokens": 72822
+            },
+            "reported": {
+              "steps": 13,
+              "fetches": 6,
+              "tokens": 72822
+            }
+          },
+          "d1d2955e-049d-47d4-8b7d-70da282bde8f": {
+            "worker": "verifier",
+            "allocated": {
+              "steps": 7,
+              "fetches": 8,
+              "tokens": 40000
+            },
+            "charged": {
+              "steps": 7,
+              "fetches": 8,
+              "tokens": 40000
+            },
+            "reported": null
+          }
+        },
+        "total_budget": {
+          "max_steps": 25,
+          "max_fetches": 24,
+          "max_tokens": 120000
+        },
+        "charged_usage": {
+          "steps": 20,
+          "fetches": 14,
+          "tokens": 112822
+        },
+        "completed_at": "2026-11-25T08:26:09.868020+00:00"
+      },
+      "http_events": [
+        {
+          "ts": "2026-11-25T08:26:08.320242+00:00",
+          "service": "orchestrator",
+          "run_id": "f705e4a0-5fb9-4258-80d6-27bee29f4a8b",
+          "request_id": "be1b30e3-d22a-453e-8e2b-7efca6eb3fa1",
+          "step": 0,
+          "direction": "out",
+          "endpoint_or_tool": "/research",
+          "status": 200,
+          "latency_ms": 23.963,
+          "attempt": 1,
+          "tokens": 0
+        },
+        {
+          "ts": "2026-11-25T08:26:08.825922+00:00",
+          "service": "orchestrator",
+          "run_id": "f705e4a0-5fb9-4258-80d6-27bee29f4a8b",
+          "request_id": "d1d2955e-049d-47d4-8b7d-70da282bde8f",
+          "step": 0,
+          "direction": "out",
+          "endpoint_or_tool": "/verify",
+          "status": "transport_error",
+          "latency_ms": 501.375,
+          "attempt": 1,
+          "tokens": 0
+        },
+        {
+          "ts": "2026-11-25T08:26:09.340627+00:00",
+          "service": "orchestrator",
+          "run_id": "f705e4a0-5fb9-4258-80d6-27bee29f4a8b",
+          "request_id": "d1d2955e-049d-47d4-8b7d-70da282bde8f",
+          "step": 0,
+          "direction": "out",
+          "endpoint_or_tool": "/verify",
+          "status": "transport_error",
+          "latency_ms": 501.668,
+          "attempt": 2,
+          "tokens": 0
+        },
+        {
+          "ts": "2026-11-25T08:26:09.865345+00:00",
+          "service": "orchestrator",
+          "run_id": "f705e4a0-5fb9-4258-80d6-27bee29f4a8b",
+          "request_id": "d1d2955e-049d-47d4-8b7d-70da282bde8f",
+          "step": 0,
+          "direction": "out",
+          "endpoint_or_tool": "/verify",
+          "status": "transport_error",
+          "latency_ms": 501.416,
+          "attempt": 3,
+          "tokens": 0
+        }
+      ]
+    },
+    {
+      "name": "researcher_down",
+      "status": "passed",
+      "elapsed_seconds": 1.548384,
+      "assertions": [
+        "partial",
+        "original K retained",
+        "prior findings stale and unverified",
+        "no new results message",
+        "verifier never called",
+        "three real TCP failures",
+        "full researcher allocation charged once",
+        "baseline unchanged"
+      ],
+      "snapshot": {
+        "run_id": "be4305d3-13d4-4ce1-8f73-808ae2212630",
+        "topic": "open-source robotics foundation models",
+        "k": 5,
+        "status": "partial",
+        "message": "No new results; previous ranking is stale.",
+        "failed_workers": [
+          {
+            "worker": "researcher",
+            "reason": "researcher connection failure or timeout"
+          }
+        ],
+        "developments": [
+          {
+            "id": "dev1",
+            "title": "OCTO open-source robot foundation model",
+            "summary": "OCTO is a transformer\u2011based generalist robot policy pretrained on 800\u202fk trajectories from the Open X\u2011Embodiment dataset, released as open\u2011source software.",
+            "claims": [
+              {
+                "claim_id": "claim1-1",
+                "text": "Open-source generalist models such as OCTO emphasize shared research infrastructure and broader robot-data coverage.",
+                "source_url": "https://www.trossenrobotics.com/post/foundation-models-for-robot-manipulation-pi0-biact-octo",
+                "verdict": "unverified",
+                "evidence": null
+              },
+              {
+                "claim_id": "claim1-2",
+                "text": "Octo is a large, transformer\u2011based policy pretrained on 800k demonstrations from the Open X\u2011Embodiment dataset.",
+                "source_url": "https://www.trossenrobotics.com/post/foundation-models-for-robot-manipulation-pi0-biact-octo",
+                "verdict": "unverified",
+                "evidence": null
+              }
+            ],
+            "rank": 1,
+            "stale": true,
+            "bucket": "still"
+          },
+          {
+            "id": "dev2",
+            "title": "ACT (Action Chunk Transformer) open-source robot foundation model",
+            "summary": "ACT is a transformer-based action chunking model for robotic manipulation, enabling high success rates with limited demonstrations.",
+            "claims": [
+              {
+                "claim_id": "claim2-1",
+                "text": "ACT leverages transformer-based action chunking and end-to-end imitation learning to enable low-cost robotic arms to perform complex tasks with high success rates.",
+                "source_url": "https://github.com/Argo-Robot/foundation_models",
+                "verdict": "unverified",
+                "evidence": null
+              }
+            ],
+            "rank": 2,
+            "stale": true,
+            "bucket": "still"
+          }
+        ],
+        "dropped": [],
+        "ledger": {
+          "e510e20b-dc9a-4092-83f2-fc98122c7066": {
+            "worker": "researcher",
+            "allocated": {
+              "steps": 18,
+              "fetches": 16,
+              "tokens": 80000
+            },
+            "charged": {
+              "steps": 18,
+              "fetches": 16,
+              "tokens": 80000
+            },
+            "reported": null
+          }
+        },
+        "total_budget": {
+          "max_steps": 25,
+          "max_fetches": 24,
+          "max_tokens": 120000
+        },
+        "charged_usage": {
+          "steps": 18,
+          "fetches": 16,
+          "tokens": 80000
+        },
+        "completed_at": "2026-11-25T08:26:11.416249+00:00"
+      },
+      "http_events": [
+        {
+          "ts": "2026-11-25T08:26:10.375042+00:00",
+          "service": "orchestrator",
+          "run_id": "be4305d3-13d4-4ce1-8f73-808ae2212630",
+          "request_id": "e510e20b-dc9a-4092-83f2-fc98122c7066",
+          "step": 0,
+          "direction": "out",
+          "endpoint_or_tool": "/research",
+          "status": "transport_error",
+          "latency_ms": 501.36,
+          "attempt": 1,
+          "tokens": 0
+        },
+        {
+          "ts": "2026-11-25T08:26:10.887731+00:00",
+          "service": "orchestrator",
+          "run_id": "be4305d3-13d4-4ce1-8f73-808ae2212630",
+          "request_id": "e510e20b-dc9a-4092-83f2-fc98122c7066",
+          "step": 0,
+          "direction": "out",
+          "endpoint_or_tool": "/research",
+          "status": "transport_error",
+          "latency_ms": 501.405,
+          "attempt": 2,
+          "tokens": 0
+        },
+        {
+          "ts": "2026-11-25T08:26:11.412745+00:00",
+          "service": "orchestrator",
+          "run_id": "be4305d3-13d4-4ce1-8f73-808ae2212630",
+          "request_id": "e510e20b-dc9a-4092-83f2-fc98122c7066",
+          "step": 0,
+          "direction": "out",
+          "endpoint_or_tool": "/research",
+          "status": "transport_error",
+          "latency_ms": 501.738,
+          "attempt": 3,
+          "tokens": 0
+        }
+      ]
+    }
+  ]
+}

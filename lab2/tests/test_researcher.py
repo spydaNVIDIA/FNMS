@@ -2,12 +2,19 @@
 
 import asyncio
 import json
+from types import SimpleNamespace
 
 import pytest
 
 from common.runtime import BudgetStop, SourceUnavailable
-from common.schemas import ResearchPayload
-from researcher.agent import ResearchLoop, canonical_url, research, tool_schemas
+from common.schemas import Development, Limits, ResearchPayload, Usage
+from researcher.agent import (
+    ResearchLoop,
+    canonical_url,
+    development_identity,
+    research,
+    tool_schemas,
+)
 
 
 URL = "https://github.com/example/project"
@@ -42,6 +49,12 @@ class ScriptedContext:
         self.search_calls = 0
         self.tools = []
         self.traces = []
+        self.request = SimpleNamespace(
+            budget=Limits(max_steps=18, max_fetches=16, max_tokens=80000),
+            time_budget_ms=600000,
+        )
+        self.usage = Usage()
+        self.remaining_seconds = 600.0
 
     def check(self):
         pass
@@ -175,6 +188,7 @@ def test_fetch_count_does_not_force_finish():
         "search_web",
         "fetch_article",
         "remember_development",
+        "skip_source",
         "finish",
     }
     loop = ResearchLoop(ResearchPayload(topic="robotics", k=3), ScriptedContext([]))
@@ -276,3 +290,214 @@ def test_search_time_budget_still_stops_the_request(monkeypatch):
     context = TimedOutSearchContext([[call("search_web", query="robotics")]])
     with pytest.raises(BudgetStop, match="Worker deadline"):
         asyncio.run(research(ResearchPayload(topic="robotics", k=3), context))
+
+
+def research_ledger(loop):
+    content = loop.messages()[1]["content"]
+    return json.loads(content.split("RESEARCH_DATA\n", 1)[1].split("\nEND_RESEARCH_DATA", 1)[0])
+
+
+def test_ledger_exposes_actual_remaining_runtime_budgets_without_changing_them():
+    context = ScriptedContext([])
+    context.usage = Usage(steps=11, fetches=5, tokens=44000)
+    context.remaining_seconds = 210.4
+    usage_before = context.usage.model_dump()
+    limits_before = context.request.budget.model_dump()
+    loop = ResearchLoop(ResearchPayload(topic="robotics", k=3), context)
+    assert research_ledger(loop)["remaining_budget"] == {
+        "model_steps": 7,
+        "page_fetches": 11,
+        "tokens": 36000,
+        "seconds": 210.4,
+        "elapsed_seconds": 389.6,
+    }
+    assert context.usage.model_dump() == usage_before
+    assert context.request.budget.model_dump() == limits_before
+
+
+def test_ledger_lists_only_unattempted_candidates_and_keeps_fetched_source_inventory():
+    loop = ResearchLoop(ResearchPayload(topic="robotics", k=3), ScriptedContext([]))
+    fetched, rejected, available = [
+        f"https://example.org/{name}"
+        for name in (
+            "fetched",
+            "rejected",
+            "available",
+        )
+    ]
+    for url in (fetched, rejected, available):
+        loop.add_candidate({"url": url})
+    loop.sources[fetched] = "Evidence already retrieved."
+    loop.rejected[rejected] = "HTTP 404"
+    ledger = research_ledger(loop)
+    assert [item["url"] for item in ledger["search_results"]] == [available]
+    assert ledger["fetched_sources"] == [{"url": fetched, "review": {"status": "pending"}}]
+    assert ledger["rejected_urls"] == {rejected: "HTTP 404"}
+    assert set(loop.candidates) == {fetched, rejected, available}
+
+
+def test_independent_fetches_and_findings_can_be_batched_in_one_model_turn():
+    urls = [f"https://example.org/project-{number}" for number in range(1, 4)]
+    findings = [finding(number, url=url) for number, url in enumerate(urls, start=1)]
+
+    class MultipleSourcesContext(ScriptedContext):
+        async def search(self, query, max_results):
+            self.search_calls += 1
+            return [{"url": url} for url in urls]
+
+    context = MultipleSourcesContext(
+        [
+            [call("search_web", query="robotics")],
+            [call("fetch_article", url=url) for url in urls],
+            [call("remember_development", development=item) for item in findings],
+            [call("finish", developments=findings)],
+        ]
+    )
+    result = asyncio.run(research(ResearchPayload(topic="robotics", k=3), context))
+    assert result == {"developments": findings}
+    assert context.partial_result == result
+    assert context.fetches == urls
+    assert len(context.messages) == 4
+
+
+def test_remember_and_finish_schemas_require_exactly_one_claim():
+    schemas = {tool["function"]["name"]: tool["function"]["parameters"] for tool in tool_schemas(3)}
+    remember_item = schemas["remember_development"]["properties"]["development"]
+    finish_item = schemas["finish"]["properties"]["developments"]["items"]
+    for item in (remember_item, finish_item):
+        assert item["properties"]["claims"]["minItems"] == 1
+        assert item["properties"]["claims"]["maxItems"] == 1
+
+
+@pytest.mark.parametrize("operation", ["remember", "finish"])
+def test_multiple_claims_are_rejected_without_corrupting_saved_findings(operation):
+    context = ScriptedContext([])
+    loop = ResearchLoop(ResearchPayload(topic="robotics", k=3), context)
+    loop.sources[URL] = "real source text"
+    loop.remember(finding(1))
+    invalid = finding(2)
+    invalid["claims"].append(finding(3)["claims"][0])
+    with pytest.raises(ValueError, match="exactly one atomic claim"):
+        if operation == "remember":
+            loop.remember(invalid)
+        else:
+            loop.finish([finding(1), invalid, finding(3)])
+    assert context.partial_result == {"developments": [finding(1)]}
+
+
+def test_generic_ids_use_titles_and_do_not_merge_unrelated_findings():
+    context = ScriptedContext([])
+    loop = ResearchLoop(ResearchPayload(topic="robotics", k=3), context)
+    loop.sources[URL] = "real source text"
+    first = finding(1)
+    first.update(id="dev1", title="OpenVLA 7B checkpoint release")
+    second = finding(2)
+    second.update(id="dev1", title="Octo 1.5 weights release")
+    assert loop.remember(first).id == "openvla-7b-checkpoint-release"
+    assert loop.remember(second).id == "octo-1-5-weights-release"
+    # The same finding gets the same identity even if the model changes its index.
+    first["id"] = "development-2"
+    assert loop.remember(first).id == "openvla-7b-checkpoint-release"
+    assert len(context.partial_result["developments"]) == 2
+    assert development_identity("OpenVLA-7B-Weights", first["title"]) == "openvla-7b-weights"
+
+
+@pytest.mark.parametrize("title", ["model release " * 35, "机器人模型发布"])
+def test_derived_identity_stays_valid_for_long_and_non_latin_titles(title):
+    item = finding(1)
+    item["title"] = title
+    item["id"] = development_identity("dev1", title)
+    assert len(item["id"]) <= 160
+    assert item["id"] == development_identity("dev99", title)
+    assert Development.model_validate(item).id == item["id"]
+
+
+def test_pending_page_blocks_another_network_turn_until_a_finding_is_saved():
+    context = ScriptedContext(
+        [
+            [call("search_web", query="robotics")],
+            [call("fetch_article", url=URL)],
+            [call("search_web", query="ignore the pending page"), call("fetch_article", url=URL)],
+            [call("remember_development", development=finding(1))],
+        ]
+    )
+    loop = ResearchLoop(ResearchPayload(topic="robotics", k=3), context)
+    with pytest.raises(BudgetStop):
+        asyncio.run(loop.run())
+    assert context.searches == ["robotics"]
+    assert context.fetches == [URL]
+    assert {tool["function"]["name"] for tool in context.tools[2]} == {
+        "remember_development",
+        "skip_source",
+        "finish",
+    }
+    assert loop.pending_sources == []
+    assert context.partial_result == {"developments": [finding(1)]}
+    assert {"tool": "fetch_article", "outcome": "validation_error"} in loop.recent_actions
+
+
+def test_skipping_a_page_reopens_research_without_inventing_a_finding():
+    context = ScriptedContext(
+        [
+            [call("search_web", query="robotics")],
+            [call("fetch_article", url=URL)],
+            [
+                call(
+                    "skip_source",
+                    url=URL,
+                    reason="This page is a link collection, not primary evidence.",
+                )
+            ],
+            [call("search_web", query="different primary sources")],
+        ]
+    )
+    loop = ResearchLoop(ResearchPayload(topic="robotics", k=3), context)
+    with pytest.raises(BudgetStop):
+        asyncio.run(loop.run())
+    assert len(context.searches) == 2
+    assert context.partial_result == {"developments": []}
+    assert loop.pending_sources == []
+    assert loop.source_reviews[URL]["status"] == "skipped"
+    assert URL in loop.sources
+    with pytest.raises(ValueError, match="actually fetched"):
+        loop.remember(finding(1, url="https://example.org/unfetched"))
+
+
+def test_focus_excerpt_stays_stable_and_actions_are_bounded():
+    loop = ResearchLoop(ResearchPayload(topic="robotics", k=3), ScriptedContext([]))
+    loop.sources[URL] = "A" * 9000
+    loop.pending_sources = [URL]
+    loop.latest_fetched_url = URL
+    first = research_ledger(loop)["focus_source"]
+    for number in range(15):
+        url = f"https://example.org/old-{number}"
+        loop.sources[url] = "Old page" * 1000
+        loop.record_action("fetch_article", "fetched", url=url)
+    ledger = research_ledger(loop)
+    assert ledger["focus_source"] == first == {"url": URL, "text": "A" * 8000}
+    assert ledger["latest_fetched_url"] == URL
+    assert ledger["pending_source_urls"] == [URL]
+    assert len(ledger["fetched_sources"]) == 12
+    assert all("text" not in item for item in ledger["fetched_sources"])
+    assert len(ledger["recent_actions"]) == 4
+    assert ledger["recent_actions"][-1]["url"] == "https://example.org/old-14"
+
+
+def test_skip_only_resolves_a_pending_fetched_url_and_invalid_finish_keeps_it():
+    loop = ResearchLoop(ResearchPayload(topic="robotics", k=3), ScriptedContext([]))
+    loop.sources[URL] = "Evidence"
+    loop.pending_sources = [URL]
+    with pytest.raises(ValueError, match="pending fetched"):
+        asyncio.run(
+            loop.execute(
+                "skip_source",
+                {
+                    "url": "https://example.org/unfetched",
+                    "reason": "Not useful",
+                },
+            )
+        )
+    with pytest.raises(ValueError, match="exactly 3"):
+        loop.finish([finding(1)])
+    assert loop.pending_sources == [URL]
+    assert loop.context.partial_result == {"developments": []}

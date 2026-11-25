@@ -1,0 +1,140 @@
+{
+  "run_id": "c91e5bbc-5372-48e6-9dc3-b40e56a27e81",
+  "topic": "open-source robotics foundation models",
+  "k": 5,
+  "status": "partial",
+  "message": "Research and verification results.",
+  "failed_workers": [
+    {
+      "worker": "researcher",
+      "reason": "step_budget_exhausted"
+    },
+    {
+      "worker": "verifier",
+      "reason": "invalid_model_response"
+    }
+  ],
+  "developments": [
+    {
+      "id": "octo-2024",
+      "title": "Octo foundation model",
+      "summary": "Octo is an open-source generalist robot policy trained on 800k trajectories using a transformer diffusion architecture.",
+      "claims": [
+        {
+          "claim_id": "octo-claim-1",
+          "text": "Octo models are transformer-based diffusion policies trained on a diverse mix of 800k robot trajectories.",
+          "source_url": "https://raw.githubusercontent.com/octo-models/octo/HEAD/README.md",
+          "verdict": "unverified",
+          "evidence": null
+        }
+      ],
+      "rank": 1,
+      "stale": false,
+      "bucket": "new"
+    },
+    {
+      "id": "pi0-2024",
+      "title": "Pi0 general-purpose robot foundation model",
+      "summary": "Pi0 combines a large vision-language model backbone (initialized from PaliGemma) with a diffusion transformer action expert for vision-language-action robotics.",
+      "claims": [
+        {
+          "claim_id": "pi0-claim-1",
+          "text": "Pi0 integrates a large vision-language model backbone initialized from PaliGemma with a diffusion transformer action expert for vision-language-action robotics.",
+          "source_url": "https://docs.openedgeplatform.intel.com/2026.1/edge-ai-suites/robotics-ai-suite/embodied/model_tutorials/model_pi0.html",
+          "verdict": "unverified",
+          "evidence": null
+        }
+      ],
+      "rank": 2,
+      "stale": false,
+      "bucket": "new"
+    },
+    {
+      "id": "spear-2024",
+      "title": "SPEAR-1 European open-weight robotics foundation model",
+      "summary": "SPEAR-1 is the first European open-weight robotic foundation model that achieves state-of-the-art performance using 20\u00d7 less robot data by leveraging non-robotic 3D data.",
+      "claims": [
+        {
+          "claim_id": "spear-claim-1",
+          "text": "SPEAR-1 is the first European-made open-weight robotic AI foundation model and outperforms existing state-of-the-art models while using 20x less robotic data.",
+          "source_url": "https://spear.insait.ai/",
+          "verdict": "unverified",
+          "evidence": null
+        }
+      ],
+      "rank": 3,
+      "stale": false,
+      "bucket": "new"
+    },
+    {
+      "id": "molmoact2-2026",
+      "title": "MolmoAct 2 open-source robotics foundation model",
+      "summary": "MolmoAct\u202f2 is an open-source vision\u2011language\u2011action model released by AI2 in 2026, with code, data, and training recipe publicly available and integrated into Hugging Face\u2019s LeRobot platform.",
+      "claims": [
+        {
+          "claim_id": "molmoact2-claim-1",
+          "text": "MolmoAct\u202f2 code, data, and training recipe were released publicly in May\u202f2026, enabling open\u2011source use and integration with Hugging Face\u2019s LeRobot platform.",
+          "source_url": "https://allenai.org/blog/molmoact2",
+          "verdict": "unverified",
+          "evidence": null
+        }
+      ],
+      "rank": 4,
+      "stale": false,
+      "bucket": "new"
+    }
+  ],
+  "dropped": [
+    "OCTO open-source robot foundation model",
+    "ACT (Action Chunk Transformer) open-source robot foundation model"
+  ],
+  "ledger": {
+    "aaf45e45-000e-41ca-b703-adcee4e2a4df": {
+      "worker": "researcher",
+      "allocated": {
+        "steps": 18,
+        "fetches": 16,
+        "tokens": 120000
+      },
+      "charged": {
+        "steps": 18,
+        "fetches": 12,
+        "tokens": 84700
+      },
+      "reported": {
+        "steps": 18,
+        "fetches": 12,
+        "tokens": 84700
+      }
+    },
+    "8263ff62-e173-4571-bab3-0d756457ba53": {
+      "worker": "verifier",
+      "allocated": {
+        "steps": 7,
+        "fetches": 8,
+        "tokens": 60000
+      },
+      "charged": {
+        "steps": 4,
+        "fetches": 4,
+        "tokens": 11179
+      },
+      "reported": {
+        "steps": 4,
+        "fetches": 4,
+        "tokens": 11179
+      }
+    }
+  },
+  "total_budget": {
+    "max_steps": 25,
+    "max_fetches": 24,
+    "max_tokens": 180000
+  },
+  "charged_usage": {
+    "steps": 22,
+    "fetches": 16,
+    "tokens": 95879
+  },
+  "completed_at": "2026-11-25T08:39:04.729881+00:00"
+}

@@ -158,8 +158,14 @@ entailment; the required human audit evaluates the latter.
 
 ## Deploy the verifier to Render
 
+Render hosts code on an internet-accessible server. Only the verifier goes there;
+the authenticated dashboard, researcher, and database stay on your computer.
+Create an account at https://render.com using GitHub, then open its dashboard.
+
 1. Make this lab2 directory available in your GitHub repository. Keep `.env` excluded.
 2. In Render choose **New Web Service**, connect that repo, and choose the **Free** plan.
+   This repository is `spydaNVIDIA/FNMS`; select the branch containing the new folder
+   (`pyda_wip2` during implementation). Choose the Python 3 runtime.
 3. Set root directory to `lab2`.
 4. Build command: `pip install -r requirements.txt`.
 5. Start command: `uvicorn verifier.app:app --host 0.0.0.0 --port $PORT --workers 1`.
@@ -170,6 +176,33 @@ entailment; the required human audit evaluates the latter.
    Do not configure DATABASE_URL, JWT_SECRET, RESEARCHER_TOKEN, or TAVILY_API_KEY there.
 8. Locally set `VERIFIER_URL=https://<your-service>.onrender.com`, then stop/start.
    The launcher will omit the local verifier and use the remote URL.
+
+Copy each secret's value after `=` from local `lab2/.env`, without surrounding
+quotes. The nonsecret environment values are:
+
+| Name | Value |
+|---|---|
+| `MODEL_BASE_URL` | `https://api.groq.com/openai/v1` |
+| `MODEL_NAME` | `openai/gpt-oss-120b` |
+| `MODEL_MIN_INTERVAL_SECONDS` | `35` |
+| `LIVE_CALLS_APPROVED` | `true` for the confirmed free-tier accounts |
+| `PYTHON_VERSION` | `3.11.11` |
+| `LOG_DIR` | `/tmp/lab2-traces` |
+
+Click **Deploy Web Service** and wait for **Live**. The `https://...onrender.com`
+address is your verifier API address. The UI remains at http://localhost:8010.
+The provider's [FastAPI deployment guide](https://render.com/docs/deploy-fastapi)
+and [environment settings guide](https://render.com/docs/configure-environment-variables)
+explain the dashboard fields.
+
+If the new folder is not in GitHub yet, run these from the FNMS repository root
+and select that branch in Render:
+
+```bash
+git add lab2
+git commit -m "Add Lab 2 agentic orchestration"
+git push
+```
 
 `render.yaml` also describes the verifier deployment. Rendering stays in the local
 authenticated UI. Render's service logs contain JSONL traces on stdout; export the

@@ -1,0 +1,149 @@
+{
+  "kind": "actual_http_non_spending_trials",
+  "created_at": "2026-11-25T08:01:44.683455+00:00",
+  "base_url": "http://127.0.0.1:8010",
+  "passed": 11,
+  "total": 11,
+  "trials": [
+    {
+      "test": "orchestrator health",
+      "passed": true,
+      "details": {
+        "http_status": 200
+      },
+      "elapsed_ms": 5.65
+    },
+    {
+      "test": "orchestrator user login and safe user response",
+      "passed": true,
+      "details": {
+        "authenticated": true,
+        "password_hash_exposed": false
+      },
+      "elapsed_ms": 35.21
+    },
+    {
+      "test": "researcher public health",
+      "passed": true,
+      "details": {
+        "http_status": 200
+      },
+      "elapsed_ms": 2.68
+    },
+    {
+      "test": "researcher authentication precedes JSON parsing",
+      "passed": true,
+      "details": {
+        "unauthenticated_malformed": 401,
+        "wrong_token": 401,
+        "authenticated_malformed": 400,
+        "invalid_schema": 400
+      },
+      "elapsed_ms": 11.31
+    },
+    {
+      "test": "researcher zero-spend replay and conflicting ID",
+      "passed": true,
+      "details": {
+        "request_id": "38cbc3e0-d78b-4515-9444-3bc3f67fcdb2",
+        "run_id": "b70c05d3-e68a-45b6-8cf6-d5d903eeda84",
+        "status": "partial",
+        "identical_replay": true,
+        "changed_body_status": 409,
+        "usage": {
+          "steps": 0,
+          "fetches": 0,
+          "tokens": 0
+        }
+      },
+      "elapsed_ms": 12.06
+    },
+    {
+      "test": "researcher tiny request budget",
+      "passed": true,
+      "details": {
+        "request_id": "b73d214d-d764-4ebb-a17e-1cd5bc54d348",
+        "status": "partial",
+        "error": {
+          "code": "time_budget_exhausted",
+          "message": "Worker elapsed-time budget exhausted",
+          "retryable": false
+        },
+        "note": "Forbidden-source verifier may finish before deadline."
+      },
+      "elapsed_ms": 6.0
+    },
+    {
+      "test": "verifier public health",
+      "passed": true,
+      "details": {
+        "http_status": 200
+      },
+      "elapsed_ms": 5.48
+    },
+    {
+      "test": "verifier authentication precedes JSON parsing",
+      "passed": true,
+      "details": {
+        "unauthenticated_malformed": 401,
+        "wrong_token": 401,
+        "authenticated_malformed": 400,
+        "invalid_schema": 400
+      },
+      "elapsed_ms": 9.88
+    },
+    {
+      "test": "verifier zero-spend replay and conflicting ID",
+      "passed": true,
+      "details": {
+        "request_id": "0b0e581c-9d04-493c-bbb7-51a0cf063d2b",
+        "run_id": "b32f7e70-8388-4c5d-820f-6700cec9da1b",
+        "status": "complete",
+        "identical_replay": true,
+        "changed_body_status": 409,
+        "usage": {
+          "steps": 0,
+          "fetches": 0,
+          "tokens": 0
+        }
+      },
+      "elapsed_ms": 25.71
+    },
+    {
+      "test": "verifier tiny request budget",
+      "passed": true,
+      "details": {
+        "request_id": "2b1fa0b9-9ba0-4ace-8806-bc266e3ebc6c",
+        "status": "partial",
+        "error": {
+          "code": "time_budget_exhausted",
+          "message": "Worker elapsed-time budget exhausted",
+          "retryable": false
+        },
+        "note": "Forbidden-source verifier may finish before deadline."
+      },
+      "elapsed_ms": 6.36
+    },
+    {
+      "test": "verifier metadata, localhost and IPv6 blocked before HTTP",
+      "passed": true,
+      "details": {
+        "request_id": "30e387ec-5c2d-49f3-9f9e-cbdbe559d6d3",
+        "blocked_urls": [
+          "http://169.254.169.254/",
+          "http://localhost/",
+          "http://[::1]/",
+          "http://[fc00::1]/",
+          "http://[fe80::1]/"
+        ],
+        "usage": {
+          "steps": 0,
+          "fetches": 0,
+          "tokens": 0
+        }
+      },
+      "elapsed_ms": 10.22
+    }
+  ],
+  "limitations": "No successful live research or Render cold-start claim is made by these trials."
+}

@@ -104,7 +104,9 @@ class Context:
         self.retry_event.clear()
         self.check()
 
-    async def model(self, messages, *, tools=None, max_output_tokens=1024):
+    async def model(self, messages, *, tools=None, response_format=None, max_output_tokens=1024):
+        if tools and response_format is not None:
+            raise ValueError("Tool calls and structured responses cannot be combined")
         if self._owns_client and os.getenv("LIVE_CALLS_APPROVED", "false").lower() != "true":
             raise ProviderFailure(
                 "live_calls_disabled",
@@ -125,6 +127,8 @@ class Context:
         }
         if tools:
             body.update(tools=tools, tool_choice="auto")
+        if response_format is not None:
+            body["response_format"] = response_format
         attempt = 0
         invalid_tool_attempts = 0
         while True:

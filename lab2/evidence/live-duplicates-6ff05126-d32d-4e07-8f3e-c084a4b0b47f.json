@@ -1,0 +1,123 @@
+{
+  "completed_at": "2026-11-25T08:21:02.889616+00:00",
+  "kind": "actual_http_live_duplicate_checks",
+  "passed": true,
+  "run_id": "6ff05126-d32d-4e07-8f3e-c084a4b0b47f",
+  "started_at": "2026-11-25T08:11:25.359014+00:00",
+  "workers": {
+    "researcher": {
+      "cached": [
+        {
+          "body_sha256": "50e679dd034540f7cf9747e3213d58546bdd0f00a50fad62b4fbaa046f21dfba",
+          "http_status": 200,
+          "latency_ms": 17.735,
+          "retry_after": null,
+          "status": "partial",
+          "usage": {
+            "fetches": 6,
+            "steps": 13,
+            "tokens": 72822
+          }
+        },
+        {
+          "body_sha256": "50e679dd034540f7cf9747e3213d58546bdd0f00a50fad62b4fbaa046f21dfba",
+          "http_status": 200,
+          "latency_ms": 9.493,
+          "retry_after": null,
+          "status": "partial",
+          "usage": {
+            "fetches": 6,
+            "steps": 13,
+            "tokens": 72822
+          }
+        }
+      ],
+      "in_flight": {
+        "body_sha256": "41aa66478b5dcdc830c5eb7726fed4bea12446ef1bdbe840c6019c4b36a40e3b",
+        "http_status": 503,
+        "latency_ms": 51.727,
+        "retry_after": "505",
+        "status": "failed",
+        "usage": {
+          "fetches": 2,
+          "steps": 3,
+          "tokens": 5713
+        }
+      },
+      "in_flight_passed": true,
+      "no_new_calls": true,
+      "outgoing_after": {
+        "fetch_article": 6,
+        "model": 13,
+        "search_web": 3,
+        "tool/fetch_article": 7,
+        "tool/remember_development": 2,
+        "tool/search_web": 3
+      },
+      "outgoing_before": {
+        "fetch_article": 6,
+        "model": 13,
+        "search_web": 3,
+        "tool/fetch_article": 7,
+        "tool/remember_development": 2,
+        "tool/search_web": 3
+      },
+      "passed": true,
+      "request_id": "7444e1c2-d6c1-4672-99e9-463351bfef09",
+      "same_response": true
+    },
+    "verifier": {
+      "cached": [
+        {
+          "body_sha256": "b836edc40ee23a68b74db497a52bc77646980c131fa9b58dc8f797c9dbfa008b",
+          "http_status": 200,
+          "latency_ms": 24.028,
+          "retry_after": null,
+          "status": "complete",
+          "usage": {
+            "fetches": 2,
+            "steps": 3,
+            "tokens": 9788
+          }
+        },
+        {
+          "body_sha256": "b836edc40ee23a68b74db497a52bc77646980c131fa9b58dc8f797c9dbfa008b",
+          "http_status": 200,
+          "latency_ms": 17.536,
+          "retry_after": null,
+          "status": "complete",
+          "usage": {
+            "fetches": 2,
+            "steps": 3,
+            "tokens": 9788
+          }
+        }
+      ],
+      "in_flight": {
+        "body_sha256": "8fd13c8892580af60a064fcc3fc94821ebb8a706e3b5cc53dd3f2ebe01567821",
+        "http_status": 503,
+        "latency_ms": 13.91,
+        "retry_after": "360",
+        "status": "failed",
+        "usage": {
+          "fetches": 1,
+          "steps": 1,
+          "tokens": 16554
+        }
+      },
+      "in_flight_passed": true,
+      "no_new_calls": true,
+      "outgoing_after": {
+        "fetch_article": 2,
+        "model": 3
+      },
+      "outgoing_before": {
+        "fetch_article": 2,
+        "model": 3
+      },
+      "passed": true,
+      "request_id": "e690fb20-1554-4427-994c-0726e36415ff",
+      "same_response": true
+    }
+  }
+}

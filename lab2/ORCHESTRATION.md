@@ -44,19 +44,57 @@ The normal local endpoints are `:8010` for the authenticated app, `:8011/researc
 and `:8012/verify`. Deployment changes only `VERIFIER_URL` to the Render HTTPS
 endpoint. Each logical request is serialized once; retries reuse those bytes.
 
-The configured worker allowances are 600 seconds for research and 360 seconds for
-verification. Caller allowances are respectively 690 and 450 seconds, including
+The configured worker allowances are 900 seconds for research and 360 seconds for
+verification. Caller allowances are respectively 990 and 450 seconds, including
 90 seconds for connection/cold-start overhead. The entire orchestration is capped
 at 2,000 seconds. A new HTTP attempt starts only if that full caller allowance
 fits inside the remaining run time. Attempts are capped at three, with exponential
 backoff and `Retry-After` respected. A long retry delay can terminate dispatch
 early instead of extending the deadline or silently shrinking the worker budget.
 
-Live local measurements are recorded below after trial completion. They cannot
-establish Render cold-start latency. The required Render deployment and actual
-idle-start measurement remain a separate gate until the user deploys through the
-dashboard. The 90-second allowance is a configuration choice based on the
-assignment's approximately one-minute expectation, not a claimed measurement.
+The first two trials used a 600-second research budget and 690-second caller
+allowance. Their immutable reports retain their original 120,000-token run total
+(80,000 research, 40,000 verification). The subsequent policy uses 180,000 tokens
+(120,000 research, 60,000 verification) and 45-second local model pacing. The extra
+headroom accommodates conservative reservations when the provider does not report
+usage on rejected attempts. The step and fetch ceilings did not increase.
+
+The first actual trial was partial and is retained, rather than replaced with a
+successful-looking artifact. Its complete list of orchestrator-to-worker calls is:
+
+| Trial / request | Endpoint | Attempt | HTTP | Caller latency |
+|---|---|---:|---:|---:|
+| 1 / `460dec19-9e99-4115-86de-785cc3c8a30b` | `/research` | 1 | 200 partial | 140,996.761 ms |
+
+Trial 1 (`72b388a4-8d9b-45a9-8e8b-ee2de80d42cb`) lasted 141.024 seconds. It
+exhausted its search allowance without saving findings, so there was no verifier
+call. This exposed the need to show remaining search capacity and disable the
+search tool once exhausted. Those changes are covered by regression tests.
+
+Trial 2 (`6ff05126-d32d-4e07-8f3e-c084a4b0b47f`) exercised a real transient model
+failure and an identical retry. Its cross-service calls were:
+
+| Request | Endpoint | Attempt | HTTP | Caller latency |
+|---|---|---:|---:|---:|
+| `7444e1c2-d6c1-4672-99e9-463351bfef09` | `/research` | 1 | 503 | 420,388.765 ms |
+| same ID and identical body | `/research` | 2 | 200 partial | 16.148 ms |
+| `e690fb20-1554-4427-994c-0726e36415ff` | `/verify` | 1 | 200 complete | 71,717.773 ms |
+
+Total duration was 672.502 seconds. Roughly 420 seconds elapsed in research,
+180 seconds in the advertised retry wait, and 71.7 seconds in verification.
+Provider pacing and retry waiting dominate elapsed time. These latencies come
+from the caller's monotonic clock; no cross-host timestamp subtraction is used.
+The additional diagnostic duplicate probes are recorded separately in
+`evidence/live-duplicates-6ff05126-d32d-4e07-8f3e-c084a4b0b47f.json`; they added no
+model calls, searches, or page fetches and are not orchestration dispatches.
+
+The verifier was deployed to `https://fnms-lab2-verifier.onrender.com`. Six actual
+non-spending smoke checks passed: health, authentication before body parsing,
+authenticated malformed JSON, blocked addresses, cached replay, and conflicting
+reuse. `evidence/render-smoke.json` records all six, including zero usage.
+The actual idle-start measurement is still pending. The 90-second allowance is
+based on the assignment's approximately one-minute expectation, not yet a claim
+about measured Render latency.
 
 ## 3. Duplicates and lost replies
 
@@ -131,8 +169,45 @@ configured unit prices are estimates, not charges or billing-console measurement
 Lab 2 traces record combined model tokens; without separate input/output counts,
 an estimate must use a range rather than pretend to know the exact split.
 
-Live trial counts, observed latency, and the supported/unsupported audit are added
-to this section as evidence is collected. The audit helper selects every
-unsupported claim and ten randomly sampled supported claim instances using seed
-42. It does not fabricate judgments. Automated tests alone do not certify this
-empirical requirement.
+The measured baseline and the first diagnostic runs are:
+
+| Measurement | Lab 1B Run 1 | Lab 2 trial 1 | Lab 2 trial 2 |
+|---|---:|---:|---:|
+| Complete / partial | complete | partial | partial |
+| Ranked developments | 5 | 0 | 2 |
+| Elapsed seconds | 162.183 | 141.024 | 672.502 |
+| Model HTTP attempts | 12 | 5 | 16 |
+| Successful model responses | 7 | 5 | 15 |
+| Recorded successful-response tokens | 24,329 | 12,673 | 58,085 |
+| Conservatively charged tokens | not comparable | 12,673 | 82,610 |
+| Search calls / estimated credits | 1 / 2 | 3 / 3 | 3 / 3 |
+| Page HTTP requests | 5 top-level fetches; redirects untraced | 1 | 8, including redirects |
+| Supported / unsupported / unreachable | no verifier | 0 / 0 / 0 | 2 / 1 / 0 |
+
+Lab 1B records 22,282 input and 2,047 output tokens. At its historical policy
+assumptions of $0.15/M input, $0.60/M output and $0.008/search credit, its estimated
+equivalent cost was $0.0205705. For Lab 2 trial 1, the corresponding range using
+combined successful-response tokens is $0.025901–$0.031604, including search.
+For trial 2 it is $0.032713–$0.058851. Its additional 24,525 charged tokens are an
+unknown-use reservation for a rejected model attempt, not reported consumption.
+Pricing assumptions are held constant for comparison; these figures are not
+current-price quotations or billing statements.
+
+The partial runs are debugging evidence, not equal-output performance benchmarks.
+They demonstrate increased cost and latency and expose where it came from; they
+cannot by themselves establish that the second agent improves overall accuracy.
+The baseline and calculations are documented in `evidence/lab1b-readiness.md`.
+
+The audit helper selects every unsupported claim and ten randomly sampled
+supported claim instances using seed 42. The initial source review covers all
+three trial-2 claims: two supported and one unsupported, with zero incorrect
+verdicts found. The unsupported Octo statistic is true according to the original
+project, but absent from the selected citation, so the verifier correctly rejected
+that citation's support. ACT's classification as a foundation model is a separate
+research-selection concern that claim verification does not resolve.
+
+`evidence/source-review-notes.json` and `.md` explicitly identify this review as
+Codex-assisted. They are not a claim that the student has personally hand-checked
+the sources. The student must review the final audit and supply their own
+judgments. Ten supported samples and the completed-run comparison are still
+pending; automated tests do not certify these empirical requirements.

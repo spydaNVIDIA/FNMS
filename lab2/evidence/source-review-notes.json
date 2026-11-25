@@ -1,0 +1,89 @@
+{
+  "reviewer": {
+    "name": "Codex",
+    "type": "AI assistant",
+    "human_student_review": false
+  },
+  "reviewed_at": "2026-11-25T08:24:04Z",
+  "scope": "All three claim instances in actual Run 2; initial notes for the later seeded cross-run sample.",
+  "method": "Read the exact cited pages using web tools, assess whether each page semantically supports the entire claim, and consult original project pages separately for context. No tracker provider credentials or new tracker runs were used.",
+  "limitations": [
+    "This is a Codex review, not the student's personal hand-check.",
+    "The reviewed pages are those available through web tools at review time. The runtime did not archive full fetched page snapshots, so exact run-time page bytes cannot be reconstructed.",
+    "Unsupported means not established by the cited page, not necessarily factually false.",
+    "These three records are not presented as the assignment's completed ten-item random supported sample."
+  ],
+  "counts": {
+    "reviewed_claim_instances": 3,
+    "supported_reviewed": 2,
+    "unsupported_reviewed": 1,
+    "unreachable_reviewed": 0,
+    "wrong_verdicts": 0,
+    "wrong_supported": 0,
+    "wrong_unsupported": 0,
+    "uncertain_verdicts": 0
+  },
+  "claims": [
+    {
+      "run_id": "6ff05126-d32d-4e07-8f3e-c084a4b0b47f",
+      "claim_id": "claim1-1",
+      "claim": "Open-source generalist models such as OCTO emphasize shared research infrastructure and broader robot-data coverage.",
+      "source_url": "https://www.trossenrobotics.com/post/foundation-models-for-robot-manipulation-pi0-biact-octo",
+      "verdict": "supported",
+      "assessment": "correct_supported",
+      "wrong_verdict": false,
+      "rationale": "The cited article's Open-source generalist models section explicitly describes Octo's shared infrastructure and diverse robot data, then explains transfer across embodiments and inspectable training workflows. The surrounding argument supports the statement's meaning; the quote is not merely an unrelated occurrence.",
+      "source_locator": "Open-source generalist models section; web extraction lines 83-86.",
+      "supplemental_primary_sources": [
+        {
+          "url": "https://octo-models.github.io/",
+          "finding": "The original project describes open generalist policies, varied robot configurations, and training across 25 datasets. This corroborates the broad characterization."
+        }
+      ]
+    },
+    {
+      "run_id": "6ff05126-d32d-4e07-8f3e-c084a4b0b47f",
+      "claim_id": "claim1-2",
+      "claim": "Octo is a large, transformer‑based policy pretrained on 800k demonstrations from the Open X‑Embodiment dataset.",
+      "source_url": "https://www.trossenrobotics.com/post/foundation-models-for-robot-manipulation-pi0-biact-octo",
+      "verdict": "unsupported",
+      "assessment": "correct_unsupported",
+      "wrong_verdict": false,
+      "rationale": "The cited article discusses Octo and Open X-Embodiment but does not give the 800k training quantity or establish this full architectural/training claim. A whole-page search found no 800 occurrence. Rejecting this citation is appropriate even though a different, authoritative page supports the underlying fact.",
+      "source_locator": "OCTO section, web extraction lines 113-127; whole-page search for 800 returned no match.",
+      "supplemental_primary_sources": [
+        {
+          "url": "https://octo-models.github.io/",
+          "finding": "The original Octo project introduction describes a transformer-based diffusion policy pretrained on 800k Open X-Embodiment robot episodes. This establishes the core fact independently, but does not repair the researcher's selected citation."
+        }
+      ],
+      "citation_diagnostic": "The same fact appears in the other fetched source, https://github.com/Argo-Robot/foundation_models, in its Octo section. This suggests a source-association error rather than a false Octo training statistic."
+    },
+    {
+      "run_id": "6ff05126-d32d-4e07-8f3e-c084a4b0b47f",
+      "claim_id": "claim2-1",
+      "claim": "ACT leverages transformer-based action chunking and end-to-end imitation learning to enable low-cost robotic arms to perform complex tasks with high success rates.",
+      "source_url": "https://github.com/Argo-Robot/foundation_models",
+      "verdict": "supported",
+      "assessment": "correct_supported",
+      "wrong_verdict": false,
+      "rationale": "The cited repository's ACT section describes that method and capability, followed by task-specific success rates and an explanation of chunked action prediction. Its claim is about demonstrated capability, not a guarantee across every robot or task. The original ACT project independently confirms the method and successful fine-manipulation examples.",
+      "source_locator": "ACT section, web extraction lines 186-191 and 241-243.",
+      "supplemental_primary_sources": [
+        {
+          "url": "https://tonyzhaozh.github.io/aloha/",
+          "finding": "The original paper's project page describes low-cost end-to-end imitation learning, transformer action chunks, and 80-90% success on named fine-manipulation tasks with ten minutes of demonstration data."
+        }
+      ]
+    }
+  ],
+  "separate_research_quality_notes": [
+    {
+      "run_id": "6ff05126-d32d-4e07-8f3e-c084a4b0b47f",
+      "development_id": "dev2",
+      "assessment": "foundation-model classification not established",
+      "rationale": "The ACT claim itself is supported. However, the report title calls ACT a robot foundation model, while the original project describes an imitation-learning algorithm trained on task demonstrations and does not establish broad foundation-model pretraining. This is a research selection/title concern, not an error in the narrow claim verdict.",
+      "source_url": "https://tonyzhaozh.github.io/aloha/"
+    }
+  ]
+}

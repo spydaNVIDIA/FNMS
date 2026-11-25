@@ -4,14 +4,14 @@ top_k: 5
 budget:
   max_steps: 25
   max_fetches: 24
-  max_tokens: 120000
+  max_tokens: 180000
 workers:
   researcher:
-    time_budget_ms: 600000
-    budget: {max_steps: 18, max_fetches: 16, max_tokens: 80000}
+    time_budget_ms: 900000
+    budget: {max_steps: 18, max_fetches: 16, max_tokens: 120000}
   verifier:
     time_budget_ms: 360000
-    budget: {max_steps: 7, max_fetches: 8, max_tokens: 40000}
+    budget: {max_steps: 7, max_fetches: 8, max_tokens: 60000}
 network:
   cold_start_allowance_seconds: 90
   max_attempts: 3

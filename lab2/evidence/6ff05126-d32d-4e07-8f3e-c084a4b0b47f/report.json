@@ -1,0 +1,106 @@
+{
+  "run_id": "6ff05126-d32d-4e07-8f3e-c084a4b0b47f",
+  "topic": "open-source robotics foundation models",
+  "k": 5,
+  "status": "partial",
+  "message": "Research and verification results.",
+  "failed_workers": [
+    {
+      "worker": "researcher",
+      "reason": "token_budget_exhausted"
+    }
+  ],
+  "developments": [
+    {
+      "id": "dev1",
+      "title": "OCTO open-source robot foundation model",
+      "summary": "OCTO is a transformer\u2011based generalist robot policy pretrained on 800\u202fk trajectories from the Open X\u2011Embodiment dataset, released as open\u2011source software.",
+      "claims": [
+        {
+          "claim_id": "claim1-1",
+          "text": "Open-source generalist models such as OCTO emphasize shared research infrastructure and broader robot-data coverage.",
+          "source_url": "https://www.trossenrobotics.com/post/foundation-models-for-robot-manipulation-pi0-biact-octo",
+          "verdict": "supported",
+          "evidence": "Open-source generalist models such as OCTO emphasize shared research infrastructure and broader robot-data coverage."
+        },
+        {
+          "claim_id": "claim1-2",
+          "text": "Octo is a large, transformer\u2011based policy pretrained on 800k demonstrations from the Open X\u2011Embodiment dataset.",
+          "source_url": "https://www.trossenrobotics.com/post/foundation-models-for-robot-manipulation-pi0-biact-octo",
+          "verdict": "unsupported",
+          "evidence": null
+        }
+      ],
+      "rank": 1,
+      "stale": false,
+      "bucket": "new"
+    },
+    {
+      "id": "dev2",
+      "title": "ACT (Action Chunk Transformer) open-source robot foundation model",
+      "summary": "ACT is a transformer-based action chunking model for robotic manipulation, enabling high success rates with limited demonstrations.",
+      "claims": [
+        {
+          "claim_id": "claim2-1",
+          "text": "ACT leverages transformer-based action chunking and end-to-end imitation learning to enable low-cost robotic arms to perform complex tasks with high success rates.",
+          "source_url": "https://github.com/Argo-Robot/foundation_models",
+          "verdict": "supported",
+          "evidence": "ACT leverages transformer-based action chunking and end-to-end imitation learning to enable low-cost robotic arms to perform complex tasks with high success rates."
+        }
+      ],
+      "rank": 2,
+      "stale": false,
+      "bucket": "new"
+    }
+  ],
+  "dropped": [],
+  "ledger": {
+    "7444e1c2-d6c1-4672-99e9-463351bfef09": {
+      "worker": "researcher",
+      "allocated": {
+        "steps": 18,
+        "fetches": 16,
+        "tokens": 80000
+      },
+      "charged": {
+        "steps": 13,
+        "fetches": 6,
+        "tokens": 72822
+      },
+      "reported": {
+        "steps": 13,
+        "fetches": 6,
+        "tokens": 72822
+      }
+    },
+    "e690fb20-1554-4427-994c-0726e36415ff": {
+      "worker": "verifier",
+      "allocated": {
+        "steps": 7,
+        "fetches": 8,
+        "tokens": 40000
+      },
+      "charged": {
+        "steps": 3,
+        "fetches": 2,
+        "tokens": 9788
+      },
+      "reported": {
+        "steps": 3,
+        "fetches": 2,
+        "tokens": 9788
+      }
+    }
+  },
+  "total_budget": {
+    "max_steps": 25,
+    "max_fetches": 24,
+    "max_tokens": 120000
+  },
+  "charged_usage": {
+    "steps": 16,
+    "fetches": 8,
+    "tokens": 82610
+  },
+  "completed_at": "2026-11-25T08:21:02.501372+00:00"
+}

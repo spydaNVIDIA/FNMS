@@ -1,0 +1,22 @@
+{
+  "login": true,
+  "passwordCleared": true,
+  "history": [
+    "11/25/2026, 12:23:17 AM — running",
+    "11/25/2026, 12:09:50 AM — partial",
+    "11/25/2026, 12:01:26 AM — partial"
+  ],
+  "currentRunId": "c91e5bbc-5372-48e6-9dc3-b40e56a27e81",
+  "runButtonDisabled": true,
+  "utcTimestamps": true,
+  "pollingWithoutNavigation": true,
+  "pollRequestsAfterRapidRefresh": 3,
+  "singlePollingLoop": true,
+  "displayedRunId": "c91e5bbc-5372-48e6-9dc3-b40e56a27e81",
+  "safeRendering": true,
+  "mobileNoHorizontalOverflow": true,
+  "historySelection": "11/25/2026, 12:09:50 AM · partial · 673 seconds",
+  "logoutClearsToken": true,
+  "logoutShowsLogin": true,
+  "javascriptErrors": []
+}

@@ -1,0 +1,131 @@
+{
+  "blocked_response": {
+    "error": null,
+    "request_id": "7473efcd-262b-41bc-ae75-c7c4382e10de",
+    "result": {
+      "verdicts": [
+        {
+          "claim_id": "blocked-1",
+          "evidence": null,
+          "verdict": "unreachable"
+        },
+        {
+          "claim_id": "blocked-2",
+          "evidence": null,
+          "verdict": "unreachable"
+        },
+        {
+          "claim_id": "blocked-3",
+          "evidence": null,
+          "verdict": "unreachable"
+        },
+        {
+          "claim_id": "blocked-4",
+          "evidence": null,
+          "verdict": "unreachable"
+        },
+        {
+          "claim_id": "blocked-5",
+          "evidence": null,
+          "verdict": "unreachable"
+        },
+        {
+          "claim_id": "blocked-6",
+          "evidence": null,
+          "verdict": "unreachable"
+        }
+      ]
+    },
+    "run_id": "27dc8428-cd51-4060-8e51-c09de271a8dd",
+    "status": "complete",
+    "usage": {
+      "fetches": 0,
+      "steps": 0,
+      "tokens": 0
+    }
+  },
+  "blocked_urls": [
+    "http://169.254.169.254/",
+    "http://localhost/",
+    "http://[::1]/",
+    "http://[fc00::1]/",
+    "http://[fe80::1]/",
+    "http://0.0.0.0/"
+  ],
+  "cached_response_sha256": "2021821bab5de963b8543b5cdcd6e615fac40cb0212223b13023df53425264ac",
+  "checks": {
+    "auth_before_body_validation": true,
+    "authenticated_bad_json_400": true,
+    "blocked_addresses_unreachable_without_fetch": true,
+    "changed_body_409": true,
+    "completed_replay_identical": true,
+    "public_health": true
+  },
+  "cold_start_eligible_at": "2026-11-25T08:43:10.847145+00:00",
+  "fixture_run_id": "27dc8428-cd51-4060-8e51-c09de271a8dd",
+  "idle_measurement_condition": "No other browser, health poll, dashboard visit, or client request may contact this service during the idle window.",
+  "kind": "actual_render_non_spending_smoke",
+  "last_contact_at": "2026-11-25T08:27:10.847145+00:00",
+  "model_or_search_calls_requested": 0,
+  "origin": "https://fnms-lab2-verifier.onrender.com",
+  "original_response_sha256": "2021821bab5de963b8543b5cdcd6e615fac40cb0212223b13023df53425264ac",
+  "passed": true,
+  "requests": [
+    {
+      "completed_at": "2026-11-25T08:27:10.156353+00:00",
+      "http_status": 200,
+      "latency_ms": 564.494,
+      "method": "GET",
+      "name": "health-readiness-1",
+      "path": "/healthz",
+      "started_at": "2026-11-25T08:27:09.591876+00:00"
+    },
+    {
+      "completed_at": "2026-11-25T08:27:10.265749+00:00",
+      "http_status": 401,
+      "latency_ms": 109.339,
+      "method": "POST",
+      "name": "unauthenticated-malformed",
+      "path": "/verify",
+      "started_at": "2026-11-25T08:27:10.156421+00:00"
+    },
+    {
+      "completed_at": "2026-11-25T08:27:10.381108+00:00",
+      "http_status": 400,
+      "latency_ms": 115.353,
+      "method": "POST",
+      "name": "authenticated-malformed",
+      "path": "/verify",
+      "started_at": "2026-11-25T08:27:10.265764+00:00"
+    },
+    {
+      "completed_at": "2026-11-25T08:27:10.617756+00:00",
+      "http_status": 200,
+      "latency_ms": 236.614,
+      "method": "POST",
+      "name": "blocked-addresses",
+      "path": "/verify",
+      "started_at": "2026-11-25T08:27:10.381151+00:00"
+    },
+    {
+      "completed_at": "2026-11-25T08:27:10.730185+00:00",
+      "http_status": 200,
+      "latency_ms": 112.398,
+      "method": "POST",
+      "name": "completed-replay-reordered-json",
+      "path": "/verify",
+      "started_at": "2026-11-25T08:27:10.617795+00:00"
+    },
+    {
+      "completed_at": "2026-11-25T08:27:10.847145+00:00",
+      "http_status": 409,
+      "latency_ms": 116.891,
+      "method": "POST",
+      "name": "changed-valid-body-conflict",
+      "path": "/verify",
+      "started_at": "2026-11-25T08:27:10.730262+00:00"
+    }
+  ],
+  "started_at": "2026-11-25T08:27:09.553183+00:00",
+  "worker_request_id": "7473efcd-262b-41bc-ae75-c7c4382e10de"
+}
