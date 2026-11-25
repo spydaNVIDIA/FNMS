@@ -1,0 +1,28 @@
+# Render Blueprint: deploy only the verifier. Researcher and orchestrator stay local.
+# Set sync:false values in Render's environment settings; never commit their values.
+services:
+  - type: web
+    name: fnms-lab2-verifier
+    runtime: python
+    plan: free
+    rootDir: lab2
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m uvicorn verifier.app:app --host 0.0.0.0 --port $PORT --workers 1
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: VERIFIER_TOKEN
+        sync: false
+      - key: MODEL_API_KEY
+        sync: false
+      - key: MODEL_BASE_URL
+        value: https://api.groq.com/openai/v1
+      - key: MODEL_NAME
+        value: openai/gpt-oss-120b
+      - key: LIVE_CALLS_APPROVED
+        sync: false
+      - key: LOG_DIR
+        value: /tmp/lab2-traces
+      - key: MODEL_MIN_INTERVAL_SECONDS
+        value: "35"

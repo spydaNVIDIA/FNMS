@@ -1,0 +1,46 @@
+{
+  "run_id": "72b388a4-8d9b-45a9-8e8b-ee2de80d42cb",
+  "topic": "open-source robotics foundation models",
+  "k": 5,
+  "status": "partial",
+  "message": "No new results; previous ranking is stale.",
+  "failed_workers": [
+    {
+      "worker": "researcher",
+      "reason": "search_budget_exhausted"
+    }
+  ],
+  "developments": [],
+  "dropped": [],
+  "ledger": {
+    "460dec19-9e99-4115-86de-785cc3c8a30b": {
+      "worker": "researcher",
+      "allocated": {
+        "steps": 18,
+        "fetches": 16,
+        "tokens": 80000
+      },
+      "charged": {
+        "steps": 5,
+        "fetches": 1,
+        "tokens": 12673
+      },
+      "reported": {
+        "steps": 5,
+        "fetches": 1,
+        "tokens": 12673
+      }
+    }
+  },
+  "total_budget": {
+    "max_steps": 25,
+    "max_fetches": 24,
+    "max_tokens": 120000
+  },
+  "charged_usage": {
+    "steps": 5,
+    "fetches": 1,
+    "tokens": 12673
+  },
+  "completed_at": "2026-11-25T08:03:47.988910+00:00"
+}

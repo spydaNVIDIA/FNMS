@@ -1,0 +1,12 @@
+{
+  "run_id": "72b388a4-8d9b-45a9-8e8b-ee2de80d42cb",
+  "status": "partial",
+  "services_exported": [
+    "orchestrator",
+    "researcher"
+  ],
+  "missing_service_logs": [
+    "verifier"
+  ],
+  "note": "Exported application records. This manifest does not certify live or Render execution."
+}

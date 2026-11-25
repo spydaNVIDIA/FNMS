@@ -1,0 +1,33 @@
+topic: open-source robotics foundation models
+top_k: 5
+# Fixed shares sum componentwise to the total; unused shares are not reassigned.
+budget:
+  max_steps: 25
+  max_fetches: 24
+  max_tokens: 120000
+workers:
+  researcher:
+    time_budget_ms: 600000
+    budget: {max_steps: 18, max_fetches: 16, max_tokens: 80000}
+  verifier:
+    time_budget_ms: 360000
+    budget: {max_steps: 7, max_fetches: 8, max_tokens: 40000}
+network:
+  cold_start_allowance_seconds: 90
+  max_attempts: 3
+  backoff_seconds: 1
+  run_timeout_seconds: 2000
+model:
+  max_output_tokens: 1800
+  # A local cost estimate, not a provider billing setting.
+  input_cost_per_million: 0.15
+  output_cost_per_million: 0.60
+search:
+  max_calls: 3
+  max_results: 5
+  credits_per_request: 1
+fetch:
+  timeout_seconds: 20
+  max_bytes: 2000000
+  max_redirects: 3
+

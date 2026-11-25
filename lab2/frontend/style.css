@@ -1,0 +1,12 @@
+:root{color-scheme:light;font:16px/1.55 system-ui,sans-serif;color:#203247;background:#f3f5f7}
+*{box-sizing:border-box}body{margin:0}header,main{max-width:1000px;margin:auto;padding:24px}
+header{display:flex;justify-content:space-between;align-items:center}header small{letter-spacing:.18em;color:#547185}
+h1{font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.15;margin:12px 0}h2{font-size:1.2rem;margin-top:0}
+header p,.muted{color:#617080}section{background:white;border:1px solid #dce3ea;border-radius:12px;padding:24px;margin-bottom:20px}
+form{display:flex;gap:14px;align-items:end;flex-wrap:wrap}label{display:flex;flex-direction:column;gap:5px;flex:1}input,select{font:inherit;padding:10px;border:1px solid #b8c5d0;border-radius:6px;width:100%}
+button{font:inherit;border:0;border-radius:6px;padding:11px 16px;background:#174d65;color:white;cursor:pointer}button:disabled{opacity:.5;cursor:wait}
+#error,#failures{color:#983a25}#error:empty,#failures:empty{display:none}.sectionHeader{display:flex;justify-content:space-between;align-items:center}
+.finding{border-top:1px solid #dce3ea;padding:20px 0}.finding:first-child{border:0}.finding h3{margin:0 0 6px}.badge{font-size:.8rem;background:#e8eef2;padding:3px 8px;border-radius:5px;display:inline-block;margin-right:8px}
+.supported{background:#e1f1e8;color:#215f3d}.unsupported,.unreachable{background:#fff0dc;color:#7b4c15}.unverified{background:#ececf1;color:#51516d}
+blockquote{border-left:3px solid #9cb8b0;margin:12px 0;padding:8px 16px;background:#f5f9f7}a{color:#175e83;overflow-wrap:anywhere}
+.claim{padding:12px 0}#k{max-width:90px}[hidden]{display:none!important}

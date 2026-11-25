@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lab 2 · Robotics research</title>
+  <link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+  <header><div><small>FNMS · LAB 2</small><h1>Robotics research, checked.</h1>
+    <p>Research findings and independently verified source evidence.</p></div>
+    <button id="logout" hidden>Log out</button></header>
+  <main>
+    <p id="error" role="alert"></p>
+    <section id="loginPanel"><h2>Sign in</h2>
+      <form id="loginForm"><label>Username<input id="username" autocomplete="username" required></label>
+        <label>Password<input id="password" type="password" autocomplete="current-password" required></label>
+        <button type="submit">Sign in</button><button type="button" id="register">Create account</button>
+      </form><p class="muted">Use the account that owns your previous runs.</p>
+    </section>
+    <div id="dashboard" hidden>
+      <section><h2>Start research</h2><form id="runForm">
+        <label>Topic<input id="topic" value="open-source robotics foundation models" required minlength="3" maxlength="255"></label>
+        <label>Results<input id="k" type="number" min="3" max="10" value="5"></label>
+        <button id="runNow" type="submit">Run research and verification</button>
+      </form><p class="muted">Runs use your configured model and search accounts. Nothing runs automatically.</p>
+      <p id="runStatus" role="status"></p></section>
+      <section><div class="sectionHeader"><h2>Run history</h2><button id="refresh">Refresh</button></div>
+        <label>Selected run<select id="history"></select></label><p id="runMeta"></p>
+        <p id="failures"></p><p id="usage" class="muted"></p></section>
+      <section><h2>Findings</h2><div id="findings"></div><p id="dropped"></p></section>
+      <section><h2>Verdict guide</h2><p><b>Supported:</b> evidence was found and the verifier judged it supports the claim.
+        <b>Unsupported:</b> support was not established. <b>Unreachable:</b> the source could not be fetched safely.
+        <b>Unverified:</b> verification did not finish. <b>Stale:</b> findings were carried forward from an older run.</p></section>
+    </div>
+  </main>
+</body></html>

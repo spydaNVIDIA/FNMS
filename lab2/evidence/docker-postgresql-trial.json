@@ -1,0 +1,147 @@
+{
+  "status": "passed",
+  "started_at": "2026-11-25T08:12:15.870232+00:00",
+  "completed_at": "2026-11-25T08:12:16.431094+00:00",
+  "elapsed_seconds": 0.560869,
+  "postgres_version": "PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "python_version": "3.13.3",
+  "database_url": "postgresql+psycopg://lab2:***@127.0.0.1:5434/lab2",
+  "client_port": 5434,
+  "server_port": 5432,
+  "provider_calls": 0,
+  "fixture_mode": "offline synthetic worker results; not research evidence",
+  "checks_passed": 32,
+  "checks": [
+    {
+      "name": "isolated_database_and_port",
+      "status": "passed"
+    },
+    {
+      "name": "idempotent_seed_one_grader",
+      "status": "passed"
+    },
+    {
+      "name": "argon2id_hash_persisted",
+      "status": "passed"
+    },
+    {
+      "name": "health_endpoint",
+      "status": "passed"
+    },
+    {
+      "name": "missing_bearer_rejected",
+      "status": "passed"
+    },
+    {
+      "name": "malformed_bearer_rejected",
+      "status": "passed"
+    },
+    {
+      "name": "seeded_grader_login",
+      "status": "passed"
+    },
+    {
+      "name": "register_owner",
+      "status": "passed"
+    },
+    {
+      "name": "password_hash_not_returned_owner",
+      "status": "passed"
+    },
+    {
+      "name": "login_owner",
+      "status": "passed"
+    },
+    {
+      "name": "register_other",
+      "status": "passed"
+    },
+    {
+      "name": "password_hash_not_returned_other",
+      "status": "passed"
+    },
+    {
+      "name": "login_other",
+      "status": "passed"
+    },
+    {
+      "name": "jwt_auth_me",
+      "status": "passed"
+    },
+    {
+      "name": "user_ownership_returns_404",
+      "status": "passed"
+    },
+    {
+      "name": "run_now_accepted",
+      "status": "passed"
+    },
+    {
+      "name": "background_run_saved_complete",
+      "status": "passed"
+    },
+    {
+      "name": "nested_json_snapshot_roundtrip",
+      "status": "passed"
+    },
+    {
+      "name": "duration_and_timestamps",
+      "status": "passed"
+    },
+    {
+      "name": "markdown_saved",
+      "status": "passed"
+    },
+    {
+      "name": "run_ownership_returns_404",
+      "status": "passed"
+    },
+    {
+      "name": "other_user_history_empty",
+      "status": "passed"
+    },
+    {
+      "name": "separate_session_persistence",
+      "status": "passed"
+    },
+    {
+      "name": "postgres_timestamps_timezone_aware",
+      "status": "passed"
+    },
+    {
+      "name": "completed_snapshot_survives_restart",
+      "status": "passed"
+    },
+    {
+      "name": "running_snapshot_settles_on_restart",
+      "status": "passed"
+    },
+    {
+      "name": "recovered_duration_persisted",
+      "status": "passed"
+    },
+    {
+      "name": "account_delete",
+      "status": "passed"
+    },
+    {
+      "name": "postgres_foreign_key_cascade",
+      "status": "passed"
+    },
+    {
+      "name": "deleted_account_token_rejected",
+      "status": "passed"
+    },
+    {
+      "name": "only_mock_orchestration_used",
+      "status": "passed"
+    },
+    {
+      "name": "trial_users_and_runs_removed",
+      "status": "passed"
+    }
+  ],
+  "remaining_data": "Seeded grader and pre-existing records preserved; trial records removed",
+  "existing_app_restarted": false,
+  "other_databases_modified": false
+}
